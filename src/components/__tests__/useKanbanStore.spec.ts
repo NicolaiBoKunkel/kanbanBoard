@@ -1,6 +1,9 @@
-import { describe, it, expect, beforeEach } from 'vitest'
-import { useKanbanStore } from '@/stores/useKanbanStore'
+import { describe, it, expect } from 'vitest'
 import type { KanbanCard } from '@/types/kanban'
+
+function assertDefined<T>(val: T | null | undefined, msg?: string): asserts val is T {
+  if (val == null) throw new Error(msg ?? 'Expected value to be defined')
+}
 
 describe('useKanbanStore', () => {
   async function freshStore() {
@@ -39,8 +42,12 @@ describe('useKanbanStore', () => {
     updateCard(updated)
 
     expect(state.lists.todo.find(x => x.id === c.id)).toBeFalsy()
-    expect(state.lists.done[0]!.id).toBe(c.id)
-    expect(state.lists.done[0]!.title).toBe('Moved!')
+    expect(state.lists.done.length).toBeGreaterThan(0)
+
+    const firstDone = state.lists.done[0]
+    assertDefined(firstDone, 'Expected at least one card in Done')
+    expect(firstDone.id).toBe(c.id)
+    expect(firstDone.title).toBe('Moved!')
   })
 
   it('removeCard() removes card from any list and returns true; false if missing', async () => {

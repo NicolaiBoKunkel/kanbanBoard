@@ -4,7 +4,7 @@ import type { KanbanCard, Status } from '@/types/kanban'
 
 const props = defineProps<{
   modelValue: boolean
-  initial?: Partial<KanbanCard> & { status: Status }
+  initial?: Partial<KanbanCard> & { status?: Status }
 }>()
 
 const emit = defineEmits<{
@@ -17,11 +17,13 @@ const open = computed({
   set: v => emit('update:modelValue', v),
 })
 
+const DEFAULT_STATUS: Status = 'todo'
+
 const form = reactive({
   id: props.initial?.id,
   title: props.initial?.title ?? '',
   description: props.initial?.description ?? '',
-  status: props.initial?.status!,
+  status: (props.initial?.status ?? DEFAULT_STATUS) as Status,
 })
 
 watch(
@@ -30,7 +32,7 @@ watch(
     form.id = val?.id
     form.title = val?.title ?? ''
     form.description = val?.description ?? ''
-    form.status = val?.status!
+    form.status = (val?.status ?? DEFAULT_STATUS) as Status
   },
   { immediate: true }
 )
