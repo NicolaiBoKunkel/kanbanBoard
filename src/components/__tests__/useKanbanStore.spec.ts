@@ -36,12 +36,12 @@ describe('useKanbanStore', () => {
       status: 'todo',
     })
 
-    expect(state.lists.todo.find(x => x.id === c.id)).toBeTruthy()
+    expect(state.lists.todo.find((x) => x.id === c.id)).toBeTruthy()
 
     const updated: KanbanCard = { ...c, title: 'Moved!', status: 'done' }
     updateCard(updated)
 
-    expect(state.lists.todo.find(x => x.id === c.id)).toBeFalsy()
+    expect(state.lists.todo.find((x) => x.id === c.id)).toBeFalsy()
     expect(state.lists.done.length).toBeGreaterThan(0)
 
     const firstDone = state.lists.done[0]
@@ -59,11 +59,11 @@ describe('useKanbanStore', () => {
       status: 'in_progress',
     })
 
-    expect(state.lists.in_progress.some(x => x.id === c.id)).toBe(true)
+    expect(state.lists.in_progress.some((x) => x.id === c.id)).toBe(true)
 
     const ok = removeCard(c.id)
     expect(ok).toBe(true)
-    expect(state.lists.in_progress.some(x => x.id === c.id)).toBe(false)
+    expect(state.lists.in_progress.some((x) => x.id === c.id)).toBe(false)
 
     expect(removeCard(c.id)).toBe(false)
   })

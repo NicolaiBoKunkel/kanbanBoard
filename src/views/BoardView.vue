@@ -8,13 +8,13 @@ import type { KanbanCard, Status } from '@/types/kanban'
 const { state, addCard, updateCard, removeCard } = useKanbanStore()
 
 const columns: { key: Status; label: string }[] = [
-  { key: 'todo',        label: 'To Do' },
+  { key: 'todo', label: 'To Do' },
   { key: 'in_progress', label: 'In Progress' },
-  { key: 'done',        label: 'Done' },
+  { key: 'done', label: 'Done' },
 ]
 
 const dialogOpen = ref(false)
-const dialogInitial = ref<Partial<KanbanCard> & { status: Status } | undefined>()
+const dialogInitial = ref<(Partial<KanbanCard> & { status: Status }) | undefined>()
 
 function openAdd(col: Status) {
   dialogInitial.value = { status: col, title: '', description: '' }
@@ -63,7 +63,12 @@ function handleChange(col: Status) {
               {{ col.label }}
             </v-toolbar-title>
             <template #append>
-              <v-btn icon variant="text" :aria-label="`Add card to ${col.label}`" @click="openAdd(col.key)">
+              <v-btn
+                icon
+                variant="text"
+                :aria-label="`Add card to ${col.label}`"
+                @click="openAdd(col.key)"
+              >
                 <v-icon>mdi-plus</v-icon>
               </v-btn>
             </template>
@@ -72,11 +77,7 @@ function handleChange(col: Status) {
           <v-divider />
 
           <div class="d-flex flex-column ga-2 pa-2">
-            <v-alert
-              v-if="state.lists[col.key].length === 0"
-              variant="tonal"
-              type="info"
-            >
+            <v-alert v-if="state.lists[col.key].length === 0" variant="tonal" type="info">
               No cards here yet.
             </v-alert>
 
@@ -117,6 +118,10 @@ function handleChange(col: Status) {
 </template>
 
 <style scoped>
-.drag-ghost { opacity: 0.6; }
-.drag-dragging { cursor: grabbing; }
+.drag-ghost {
+  opacity: 0.6;
+}
+.drag-dragging {
+  cursor: grabbing;
+}
 </style>

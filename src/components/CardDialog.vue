@@ -14,7 +14,7 @@ const emit = defineEmits<{
 
 const open = computed({
   get: () => props.modelValue,
-  set: v => emit('update:modelValue', v),
+  set: (v) => emit('update:modelValue', v),
 })
 
 const DEFAULT_STATUS: Status = 'todo'
@@ -34,7 +34,7 @@ watch(
     form.description = val?.description ?? ''
     form.status = (val?.status ?? DEFAULT_STATUS) as Status
   },
-  { immediate: true }
+  { immediate: true },
 )
 
 function submit() {
@@ -58,7 +58,7 @@ function submit() {
           <v-text-field
             v-model="form.title"
             label="Title"
-            :rules="[(v:string)=>!!v || 'Title is required']"
+            :rules="[(v: string) => !!v || 'Title is required']"
             autofocus
             hide-details="auto"
           />
